@@ -1,0 +1,4 @@
+Manifest-Version: 1.0 
+Premain-Class: ys.profiler.instrument.Premain
+Class-Path: asm-6.0.jar asm-tree-6.0.jar
+
