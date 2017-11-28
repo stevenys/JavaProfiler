@@ -7,6 +7,7 @@ public class Premain {
 	public static void premain(String agentArgs, Instrumentation inst) 
 	           throws ClassNotFoundException, UnmodifiableClassException { 
 	       inst.addTransformer(new Transformer()); 
+//	       inst.addTransformer(new TreeTransformer()); 
 	   } 
 
 }

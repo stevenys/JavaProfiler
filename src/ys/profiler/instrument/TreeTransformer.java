@@ -12,15 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 
-public class Transformer implements ClassFileTransformer {
+/**
+ * suggest to use the visitor manner which is more efficient,
+ * tree manner needs to traverse class structure twice.
+ *
+ */
+@Deprecated
+public class TreeTransformer implements ClassFileTransformer {
 
-	private List<ClassTransformerFactory> classTransformerFactoryList = new ArrayList<ClassTransformerFactory>();
+	private List<TreeClassTransformer> classTransformerList = new ArrayList<TreeClassTransformer>();
 	
-	public Transformer() {
+	public TreeTransformer() {
 		initClassTransformerList();
 	}
 	
@@ -28,14 +33,14 @@ public class Transformer implements ClassFileTransformer {
 		InputStream is = null;
 		BufferedReader reader = null;
 		try {
-			is = Transformer.class.getClassLoader().getResourceAsStream("ys/profiler/config/profiler.transformerFactory");
+			is = TreeTransformer.class.getClassLoader().getResourceAsStream("ys/profiler/config/profiler.treeTransformer");
 			reader = new BufferedReader(new InputStreamReader(is));
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				line = line.trim();
 				
 				try {
-					classTransformerFactoryList.add((ClassTransformerFactory) Class.forName(line).newInstance());
+					classTransformerList.add((TreeClassTransformer) Class.forName(line).newInstance());
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}		
@@ -45,8 +50,8 @@ public class Transformer implements ClassFileTransformer {
 		}
 	}
 	
-	protected ClassTransformerFactory determineClassTransformerFactory(String className) {
-		for (ClassTransformerFactory classTransformer: classTransformerFactoryList) {
+	protected TreeClassTransformer determineClassTransformer(String className) {
+		for (TreeClassTransformer classTransformer: classTransformerList) {
 			if (classTransformer.isNeedToTransform(className)) {
 				return classTransformer;
 			}
@@ -56,16 +61,18 @@ public class Transformer implements ClassFileTransformer {
 	
 	public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
 			ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-		ClassTransformerFactory classTransformerFactory = determineClassTransformerFactory(className);
-		if (classTransformerFactory == null) {
+		TreeClassTransformer classTransformer = determineClassTransformer(className);
+		if (classTransformer == null) {
 			return classfileBuffer;
 		}
 		
 		ClassReader reader = new ClassReader(classfileBuffer);
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);  
-		ClassVisitor classTransformer = classTransformerFactory.getClassTransformer(Opcodes.ASM5, writer);
-		reader.accept(classTransformer, 0);
+		ClassNode classNode = new ClassNode();  
+		reader.accept(classNode, 0);  
+		classTransformer.transform(classNode);
 		
+		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);  
+		classNode.accept(writer); 
 		byte[] bytes =  writer.toByteArray();
 		debugClass(className, bytes);
 	    return bytes;

@@ -2,6 +2,11 @@ package ys.profiler.sample;
 
 public class SampleTestee {
 	
+	public String field1 = null;
+	
+	public int field2 = 0;
+	
+	
 	/**
 	 *  check one return case.
 	 */
@@ -47,6 +52,25 @@ public class SampleTestee {
 			name = "steven";
 		}
 		System.out.println("case4-3: " + name); 
+		return 3L;
+	}
+	
+	/**
+	 * check multiple parameter and field case.
+	 * check max stack recompute case (from 4 to 5).
+	 */
+	public long case5(String param1, int param2, int param3, String unusedParam4) {
+		try {
+			if (unusedParam4 == null) {
+				System.out.println("case5-1: unusedParam4=" + unusedParam4); 
+				throw new NullPointerException(param1);
+			}
+		} catch (RuntimeException e) {
+			System.out.println("case5-2: " + e.getMessage()); 
+			param1 = "steven";
+		}
+		System.out.println("case5-3: field1=" + field1 + " field2=" + field2 
+				+ " param1=" + param1 + " param2=" + param2 + " param3=" + param3); 
 		return 3L;
 	}
 	

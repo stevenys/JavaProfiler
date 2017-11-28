@@ -37,6 +37,12 @@ public class SampleMain {
 		System.out.println("case4-3.result==3 ? " + (result4_3 == 3));
 		System.out.println("----------------------------------------\n"); 
 		
+		testee.field1 = "hello";
+		testee.field2 = 1;
+		long result5_3 = testee.case5("steven", 666, 888, null);
+		System.out.println("result5_3.result==3 ? " + (result5_3 == 3));
+		System.out.println("----------------------------------------\n"); 
+		
 		testee.hello(name);
 	}
 
