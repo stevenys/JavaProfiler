@@ -1,7 +1,7 @@
 # JavaProfiler
 
-The core code is to implement a try-finally syntax using asm (write using asm-6.0 and asm-tree-6.0, test under jdk1.5 & 1.8)
-https://raw.githubusercontent.com/stevenys/JavaProfiler/master/src/ys/profiler/instrument/ClassTransformer.java
+The core code is to implement a try-finally syntax using asm (write using asm-6.0, test under jdk1.5 & 1.8)
+https://raw.githubusercontent.com/stevenys/JavaProfiler/master/src/ys/profiler/instrument/MethodTransformer.java
 
 1.  Between any return opcode and the previous one, add one try-catch block, do the end job both in try and catch blocks.
 (since the end job opcode may be written more than once, suggest to put more method context pass opcodes in start job block)
