@@ -1,6 +1,6 @@
-package ys.profiler.sample;
+package ys.profiler.mysql;
 
-public class SampleContextTracer {
+public class MysqlContextTracer {
 	
 	/**
 	 * Just a sample, your case can use other efficient thread local manner to store method start context.
@@ -22,10 +22,10 @@ public class SampleContextTracer {
 		}
 	}
 	
-	public static void start(String field1, int field2, String param1, int param2, int param3) {
+	public static void start(String host, int port, String database, String sql) {
 		long nanoTime = System.nanoTime();
-		Object[] data = new Object[] {field1, field2, param1, param2, param3};
-		System.out.println("SampleContextTracer.start=" + nanoTime + " data.length=" + data.length);
+		Object[] data = new Object[] {host, port, database, sql};
+		System.out.println("MysqlContextTracer.start=" + nanoTime + " data.length=" + data.length);
 		CONTEXT.set(new Context(nanoTime, data)); 
 	}
 	
@@ -33,10 +33,11 @@ public class SampleContextTracer {
 		Context context = CONTEXT.get();
 		if (context != null) {
 			long endTime = System.nanoTime();
-			System.out.println("SampleContextTracer.end=" + endTime + " start=" + context.startTime + " elapse=" + (endTime - context.startTime));
+			System.out.println("MysqlContextTracer.end=" + endTime + " start=" + context.startTime + " elapse=" + (endTime - context.startTime));
 			printData(context.data);
+			System.out.println("---------------------------------------------\n"); 
 		} else {
-			System.err.println("context is null in end method, shouldn't be."); 
+			System.err.println("context is null in end method, shouldn't be.");
 		}
 	}
 	

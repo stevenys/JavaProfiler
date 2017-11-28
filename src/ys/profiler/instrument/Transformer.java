@@ -61,9 +61,10 @@ public class Transformer implements ClassFileTransformer {
 			return classfileBuffer;
 		}
 		
+		int classWriterFlag = classTransformerFactory.getClassWriterFlag();
 		ClassReader reader = new ClassReader(classfileBuffer);
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);  
-		ClassVisitor classTransformer = classTransformerFactory.getClassTransformer(Opcodes.ASM5, writer);
+		ClassWriter writer = new ClassWriter(classWriterFlag);  
+		ClassVisitor classTransformer = classTransformerFactory.getClassTransformer(Opcodes.ASM4, writer);
 		reader.accept(classTransformer, 0);
 		
 		byte[] bytes =  writer.toByteArray();

@@ -9,6 +9,13 @@ import org.objectweb.asm.ClassVisitor;
  */
 public interface ClassTransformerFactory {
 	
+	/**
+	 * For class equal or above 1.6, please return ClassWriter.COMPUTE_FRAMES.
+	 * 
+	 * Others return 0.
+	 */
+	public int getClassWriterFlag();
+	
 	public ClassTransformer getClassTransformer(final int api, final ClassVisitor cv);
 	
 	public boolean isNeedToTransform(String className);

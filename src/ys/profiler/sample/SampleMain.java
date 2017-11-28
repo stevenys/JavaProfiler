@@ -8,7 +8,6 @@ public class SampleMain {
 
 	public static void main(String[] args) {
 		SampleTestee testee = new SampleTestee();
-		System.out.println("SampleTestee.className=" + testee.getClass().getName()); 
 		
 		String name = "ys";
 		testee.case1(name);
@@ -33,8 +32,11 @@ public class SampleMain {
 		System.out.println("case3-2.result==2 ? " + (result3_2 == 2));
 		System.out.println("----------------------------------------\n"); 
 		
-		long result4_3 = testee.case4(null);
-		System.out.println("case4-3.result==3 ? " + (result4_3 == 3));
+		try {
+			testee.case4(null);
+		} catch (Throwable e) {
+			e.printStackTrace(); 
+		}
 		System.out.println("----------------------------------------\n"); 
 		
 		testee.field1 = "hello";

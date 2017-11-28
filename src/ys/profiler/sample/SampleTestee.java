@@ -27,7 +27,7 @@ public class SampleTestee {
 	}
 	
 	/**
-	 * check throw | return case.
+	 * check throw -> return case.
 	 */
 	public long case3(String name) {
 		if (name == null) {
@@ -39,7 +39,7 @@ public class SampleTestee {
 	}
 	
 	/**
-	 * check throw->catch->throw | return case.
+	 * check throw -> return -> throw 
 	 */
 	public long case4(String name) {
 		try {
@@ -47,12 +47,12 @@ public class SampleTestee {
 				System.out.println("case4-1: " + name); 
 				throw new NullPointerException(name);
 			}
+			return 3L;
 		} catch (RuntimeException e) {
 			System.out.println("case4-2: " + e.getMessage()); 
 			name = "steven";
-		}
-		System.out.println("case4-3: " + name); 
-		return 3L;
+			throw e;
+		} 
 	}
 	
 	/**
@@ -76,5 +76,5 @@ public class SampleTestee {
 	
 	public void hello(String name) {
 		System.out.println("hello: " + name); 
-	}
+	}	 
 }
