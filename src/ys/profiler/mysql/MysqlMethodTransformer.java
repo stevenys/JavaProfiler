@@ -34,8 +34,9 @@ public class MysqlMethodTransformer extends MethodTransformer {
 		mv.visitInsn(Opcodes.ICONST_5); //ignore the first 5 packet header bytes.
 		mv.visitVarInsn(Opcodes.ALOAD, 4);
 		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/mysql/jdbc/Buffer", "getPosition", "()I", false);
-		mv.visitLdcInsn("utf-8"); 
-		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/String", "<init>", "([BIILjava/lang/String;)V", false);
+		mv.visitInsn(Opcodes.ICONST_5);
+		mv.visitInsn(Opcodes.ISUB); 
+		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/String", "<init>", "([BII)V", false);
 		doInvokeStart();
 		mv.visitJumpInsn(Opcodes.GOTO, labelPacketNullEnd); 
 		
